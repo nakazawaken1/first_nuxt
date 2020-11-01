@@ -47,3 +47,13 @@ jobs:
 
       - name: Run tests 🧪
         run: yarn test
+
+      - run: yarn generate_ftp
+
+      - name: FTP-Deploy-Action
+        uses: SamKirkland/FTP-Deploy-Action@3.1.1
+        with:
+          ftp-server: ftp://teo.geo.jp
+          ftp-username: nakazawa2.user20
+          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: dist_ftp/

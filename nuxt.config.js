@@ -17,7 +17,10 @@ export default {
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [
-    'ant-design-vue/dist/antd.css'
+    {
+      src: 'ant-design-vue/dist/antd.less',
+      lang: 'less',
+    }
   ],
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
@@ -38,12 +41,52 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    '@nuxtjs/auth',
   ],
+
+  auth: {
+    redirect: {
+      login: '/login', //未ログイン状態でアクセスした場合のリダイレクト先
+      logout: '/', //ログアウト後の遷移先
+      callback: '/callback', //コールバックルート
+      home: '/',
+    },
+    strategies: {
+      asana: {
+        _scheme: 'oauth2',
+        authorization_endpoint: 'https://app.asana.com/-/oauth_authorize',
+        client_id: '1198967219935704',
+        response_type: 'id_token',
+        scope: ['openid', 'profile', 'email'],
+      },
+      google: {
+        client_id: '379051524856-8usib3lrstrje6669vhn3gjm6c39q6gn.apps.googleusercontent.com',//secret: y6Q2RLPyU4Y2fzgiZ1Tv66gp
+        response_type: 'id_token',
+        scope: ['openid', 'profile', 'email'],
+      },
+    }
+  },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+    loaders: {
+      less: {
+        lessOptions: {
+          modifyVars: {
+            'font-family': '-apple-system, BlinkMacSystemFont, Meiryo, sans-serif',
+          },
+          javascriptEnabled: true
+        }
+      }
+    },
+  },
+  router: {
+    base: process.env.BASE
+  },
+  generate: {
+    dir: process.env.DIR
   }
 }
